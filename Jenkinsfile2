@@ -3,7 +3,7 @@ pipeline {
 
   environment{
     DOCKER_REGISTRY = 'vijayalakshmis/insureme'
-    DOCKER_CREDENTIALS = 'docker-hub-cred'
+    DOCKER_REGISTRY_CREDENTIALS = 'docker-hub-cred'
 
 
   }
