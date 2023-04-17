@@ -1,12 +1,12 @@
 pipeline {
   agent any
 
-  environment{
-    DOCKER_REGISTRY = 'vijayalakshmis/insureme'
-    DOCKER_REGISTRY_CREDENTIALS = 'docker-hub-cred'
-
-
+  environment {
+    imagename = "vijayalakshmis/insureme"
+    registryCredential = 'docker-hub-cred'
+    dockerImage = ''
   }
+
 	
   tools {
     maven 'MAVEN_3'
@@ -32,25 +32,23 @@ pipeline {
         publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/var/lib/jenkins/workspace/insureme/target/surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
       }
     }
-
-    stage ('Docker Image'){
-      steps{
-        sh 'docker build -t vijayalakshmis/insureme:latest .'
-      }
-    }
     
-    stage('Docker Login') {
-      steps {
-         withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
-                    sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY"
-                }
-
+    stage('Build image') {
+      steps{
+        script {
+          dockerImage = docker.build imagename
+        }
       }
     }
-
-    stage ('Docker Push'){
+    stage('Deploy Image') {
       steps{
-        sh 'docker push vijayalakshmis/insureme:latest'
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push("$BUILD_NUMBER")
+             dockerImage.push('latest')
+
+          }
+        }
       }
     }
 
