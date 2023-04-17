@@ -38,16 +38,20 @@ pipeline {
         sh 'docker build -t vijayalakshmis/insureme:latest .'
       }
     }
-
+    
+    stage('Docker Login') {
+      steps {
+                withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    docker.withRegistry("https://$DOCKER_REGISTRY", "docker") {
+                        sh "echo Logged in to Docker registry"
+                    }
+                }
+            }
+    }
 
     stage ('Docker Push'){
       steps{
-        script{
-          docker.withRegistry('',DOCKER_CREDENTIALS){
-            sh 'docker push vijayalakshmis/insureme:latest'
-          }
-        }
-
+        sh 'docker push vijayalakshmis/insureme:latest'
       }
     }
 
