@@ -2,7 +2,10 @@ pipeline {
   agent any
 
   environment{
-    DOCKERHUB_CREDENTIALS= credentials('docker-hub-cred')
+    DOCKER_REGISTRY = 'docker.io'
+    DOCKER_REGISTRY_CREDENTIALS = 'docker-hub-cred'
+
+
   }
 	
   tools {
@@ -29,15 +32,18 @@ pipeline {
         publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/var/lib/jenkins/workspace/insureme/target/surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
       }
     }
+
     stage ('Docker Image'){
       steps{
         sh 'docker build -t vijayalakshmis/insureme:latest .'
       }
     }
+
     stage ('Docker Login'){
       steps{
-        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
-	echo 'Login Completed'
+        withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')]) {
+                    sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY"
+           }
       }
     }
 
