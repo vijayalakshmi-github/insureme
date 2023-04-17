@@ -5,7 +5,7 @@ pipeline {
     imagename = "vijayalakshmis/insureme"
     registryCredential = 'docker-hub-cred'
     dockerImage = ''
-  }i
+  }
   tools {
     maven 'MAVEN_3'
   }
