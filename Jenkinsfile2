@@ -1,13 +1,6 @@
 pipeline {
   agent any
 
-  environment {
-    imagename = "vijayalakshmis/insureme"
-    registryCredential = 'docker-hub-cred'
-    dockerImage = ''
-  }
-
-	
   tools {
     maven 'MAVEN_3'
   }
@@ -35,22 +28,21 @@ pipeline {
     
     stage('Build image') {
       steps{
-        script {
-          dockerImage = docker.build imagename
+        sh 'docker build -t vijayalakshmis/insureme:latest .'
+      }
+    }
+    stage('Docker Login'){
+      steps{
+        withCredentials([usernamePassword(credentialsId: 'docker-hub-cred', passwordVariable: 'pass', usernameVariable: 'un')]) {
+          sh "docker login -u ${evn.un} -p ${evn.pass}"
         }
       }
     }
+
     stage('Deploy Image') {
       steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push("$BUILD_NUMBER")
-             dockerImage.push('latest')
-
-          }
-        }
+        sh 'docker push vijayalakshmis/insureme:latest'
       }
     }
-
   }
 }
