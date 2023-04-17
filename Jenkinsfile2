@@ -1,0 +1,29 @@
+pipeline {
+  agent any
+	
+  tools {
+    maven 'MAVEN_3'
+  }
+	
+  stages{
+    stage ('Checkout'){
+      steps{
+	echo 'checkout the source code'
+	git 'https://github.com/vijayalakshmi-github/insureme.git'
+      }
+    }
+		
+    stage ('Build'){
+      steps{
+	echo 'Packaging'
+	sh 'mvn clean package'
+      }
+    }
+		
+    stage ('Publish report'){
+      steps{
+        publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: '/var/lib/jenkins/workspace/insureme/target/surefire-reports', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+      }
+    }
+  }
+}
