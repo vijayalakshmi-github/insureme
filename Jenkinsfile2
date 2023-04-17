@@ -2,7 +2,7 @@ pipeline {
   agent any
 
   environment{
-    DOCKER_REGISTRY_CREDENTIALS = 'docker-hub-cred'
+    DOCKERHUB_CREDENTIALS= credentials('docker-hub-cred'
   }
 	
   tools {
@@ -34,15 +34,13 @@ pipeline {
         sh 'docker build -t vijayalakshmis/insureme:latest .'
       }
     }
-
     stage ('Docker Login'){
       steps{
-        withCredentials([usernamePassword(credentialsId: DOCKER_REGISTRY_CREDENTIALS, passwordVariable: 'DOCKER_PASSWORD', usernameVariable: 'DOCKER_USERNAME')])
-        {
-              sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD $DOCKER_REGISTRY"
-        }
+        sh 'echo $DOCKERHUB_CREDENTIALS_PSW | sudo docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'                		
+	echo 'Login Completed'
       }
     }
+
     stage ('Docker Push'){
       steps{
         sh 'docker push vijayalakshmis/insureme:latest'
