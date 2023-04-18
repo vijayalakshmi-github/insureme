@@ -67,7 +67,7 @@ pipeline {
     stage('Test') {
       steps {
          
-         sh 'java -jar insureme.jar'
+         sh 'java -Dwebdriver.chrome.driver=/usr/bin/chromedriver -jar insureme.jar'
       }
     }
 
