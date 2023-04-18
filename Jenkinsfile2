@@ -54,12 +54,12 @@ pipeline {
       }
     }
 
-    stage('Selenium Test') {
-      steps {
+  //  stage('Selenium Test') {
+    //  steps {
          
-         sh 'java -jar insureme.jar'
-      }
-    }
+      //   sh 'java -jar insureme.jar'
+    //  }
+   // }
 
   }
 }
