@@ -54,6 +54,22 @@ pipeline {
       }
     }
 
+    stage('Chrome Setup') {
+      steps {
+                // Install Chrome and the ChromeDriver WebDriver
+                sh 'sudo apt-get update && sudo apt-get install -y google-chrome-stable'
+                sh 'wget https://chromedriver.storage.googleapis.com/$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip'
+                sh 'unzip chromedriver_linux64.zip'
+                sh 'sudo mv chromedriver /usr/local/bin'
+                sh 'sudo chmod +x /usr/local/bin/chromedriver'
+       }
+    }
+    
+    stage('Test') {
+      steps {
+         
+         sh 'java -jar insureme.jar'
+    }
 
   }
 }
