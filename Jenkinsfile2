@@ -57,13 +57,13 @@ pipeline {
     stage('Chrome Setup') {
       steps {
                 // Install Chrome and the ChromeDriver WebDriver
-                sh 'apt-get update && apt-get install -f && apt-get install unzip'
-                sh 'wget https://chromedriver.storage.googleapis.com/$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip'
+                sh 'sudo apt-get update && sudo apt-get install -f && sudo apt-get install unzip'
+                sh 'sudo wget https://chromedriver.storage.googleapis.com/$(curl -s https://chromedriver.storage.googleapis.com/LATEST_RELEASE)/chromedriver_linux64.zip'
                 sh 'sudo dpkg -i google-chrome*.deb'
-                sh 'wget https://chromedriver.storage.googleapis.com/111.0.5563.64/chromedriver_linux64.zip'
-                sh 'unzip -o chromedriver_linux64.zip'
-                sh 'mv chromedriver /usr/local/bin'
-                sh 'chmod +x /usr/local/bin/chromedriver'
+                sh 'sudo wget https://chromedriver.storage.googleapis.com/111.0.5563.64/chromedriver_linux64.zip'
+                sh 'sudo unzip -o chromedriver_linux64.zip'
+                sh 'sudo mv chromedriver /usr/local/bin'
+                sh 'sudo chmod +x /usr/local/bin/chromedriver'
        }
     }
     
