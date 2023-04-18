@@ -62,7 +62,8 @@ pipeline {
                 sh 'sudo unzip -o chromedriver_linux64.zip'
                 sh 'sudo mv chromedriver /usr/bin'
                 sh 'sudo chmod +x /usr/bin/chromedriver'
-   } 
+       }
+    }
     stage('Test') {
       steps {
          
