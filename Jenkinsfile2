@@ -62,10 +62,12 @@ pipeline {
                 sh 'sudo sh -c \'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list\''
                 sh 'sudo apt-get update'
                 sh 'sudo apt-get install google-chrome-stable -y' 
-                sh 'sudo wget https://chromedriver.storage.googleapis.com/111.0.5563.64/chromedriver_linux64.zip'
-                sh 'sudo unzip -o chromedriver_linux64.zip'
-                sh 'sudo mv chromedriver /usr/local/bin'
-                sh 'sudo chmod +x /usr/local/bin/chromedriver'
+                sh 'LATEST=$(wget -q -O - http://chromedriver.storage.googleapis.com/LATEST_RELEASE)'
+                sh 'wget http://chromedriver.storage.googleapis.com/$LATEST/chromedriver_linux64.zip'
+                sh 'sudo unzip chromedriver_linux64.zip'
+                sh 'sudo mv chromedriver /usr/bin/chromedriver'
+                sh 'sudo chown root:root /usr/bin/chromedriver'
+                sh 'sudo chmod +x /usr/bin/chromedriver'
        }
     }
     
