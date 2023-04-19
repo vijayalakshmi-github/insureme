@@ -71,7 +71,7 @@ ChromeDriver was started successfully.
 Apr 19, 2023 4:13:26 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
 WARNING: Unable to find an exact match for CDP version 112, so returning the closest version found: 111
 Test Successful
-
+'
       }
     }
 
